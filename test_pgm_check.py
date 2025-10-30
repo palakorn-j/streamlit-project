@@ -1090,7 +1090,7 @@ for label, func in VALIDATION_RULES.items():
             )
 
 # === Tabs for Single vs Multiple File Validation ===
-tab1, tab2, tab3 = st.tabs(["📁 Single File Validation", "🗂️ Multiple File Validation", "⚠️ Spec Draft"])
+tab1, tab2, tab3 = st.tabs(["📁 Single File Validation", "🗂️ Multiple File Validation", "⚠️ MSS Spec Validation"])
 
 # ------------------------------------------------------
 # TAB 1: Single File Validation
@@ -1365,7 +1365,7 @@ with tab2:
 # TAB 3: Single File Validation
 # ------------------------------------------------------
 with tab3:
-    st.header("Spec Validation")
+    st.header("MSS Spec Validation")
 
     uploaded_spec_file = st.file_uploader("Upload a .tst file", type=["tst"], key="spec")
 
@@ -1443,7 +1443,7 @@ with tab3:
 
             st.set_page_config(layout="wide")
 
-            st.subheader("Spec Draft (Editable)")
+            st.subheader("MSS Table")
 
             # Use container width and wrap it in a full-width column
             with st.container():
