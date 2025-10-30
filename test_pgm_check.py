@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import re
+import os
 
 def calc_si(txt_a: str, txt_b: str, op: str = "/") -> str:
     """
@@ -1444,7 +1445,8 @@ with tab3:
     st.header("MSS Spec Validation")
 
     uploaded_spec_file = st.file_uploader("Upload a .tst file", type=["tst"], key="spec")
-
+    file_name = os.path.splitext(uploaded_spec_file.name([0]
+    
     if uploaded_spec_file:
         data = uploaded_spec_file.read()
         tests, sorts = parse_tst_data(data)
@@ -1527,9 +1529,9 @@ with tab3:
             # --- Export Spec Draft ---
             csv_data = edited_spec.to_csv(index=False).encode("utf-8")
             st.download_button(
-                label="📥 Download Spec Draft as CSV",
+                label="📥 Download MSS as CSV",
                 data=csv_data,
-                file_name="spec_draft.csv",
+                file_name=f"{file_name}.csv",
                 mime="text/csv"
             )
 
