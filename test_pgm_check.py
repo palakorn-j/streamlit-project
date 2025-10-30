@@ -9,9 +9,7 @@ def calc_si(txt_a: str, txt_b: str, op: str = "/") -> str:
     are strings like '80u', '100m', etc.
     Automatically scales the result to keep it between 1 and 999,
     with an appropriate SI prefix, formatted to 4 significant digits.
-    """
-
-    import re
+    """   
 
     # Define SI prefixes from smallest to largest
     si_prefix = [
