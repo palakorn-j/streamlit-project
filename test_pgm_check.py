@@ -1444,10 +1444,10 @@ with tab2:
 with tab3:
     st.header("MSS Spec Validation")
 
-    uploaded_spec_file = st.file_uploader("Upload a .tst file", type=["tst"], key="spec")
-    file_name = os.path.splitext(uploaded_spec_file.name)[0]
+    uploaded_spec_file = st.file_uploader("Upload a .tst file", type=["tst"], key="spec")    
     
     if uploaded_spec_file:
+        file_name = os.path.splitext(uploaded_spec_file.name)[0]
         data = uploaded_spec_file.read()
         tests, sorts = parse_tst_data(data)
         df_tests = pd.DataFrame(tests) if tests else None
