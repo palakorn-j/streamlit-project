@@ -1212,14 +1212,22 @@ with tab1:
 
 
             # Details
-            for label, errors in all_errors.items():
+            '''for label, errors in all_errors.items():
                 with st.expander(f"{label} Details ({len(errors)} issue(s))"):
                     if errors:
                         st.error(f"{len(errors)} issue(s) found:")
                         for e in errors:
                             st.write(f"- {e}")
                     else:
-                        st.success("No issues found ✅")
+                        st.success("No issues found ✅")'''
+            
+                for label, errors in all_errors.items():
+                    if errors:  # Only show expanders with actual issues
+                        with st.expander(f"❗ {label} Details ({len(errors)} issue(s))", expanded=True):
+                            st.error(f"{len(errors)} issue(s) found:")
+                            for e in errors:
+                                st.markdown(f"<span style='color:red'>• {e}</span>", unsafe_allow_html=True)
+    
         #st.dataframe(df_tests_processed)                        
     else:
         st.info("Please upload a .tst file to start validation.")
