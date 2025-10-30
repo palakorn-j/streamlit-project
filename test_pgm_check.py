@@ -1209,8 +1209,7 @@ with tab1:
                 hide_index=True,
                 height=len(summary_df) * 35 + 40  # auto height per row
             )
-
-
+            
             # Details
             '''for label, errors in all_errors.items():
                 with st.expander(f"{label} Details ({len(errors)} issue(s))"):
@@ -1221,12 +1220,12 @@ with tab1:
                     else:
                         st.success("No issues found ✅")'''
             
-                for label, errors in all_errors.items():
-                    if errors:  # Only show expanders with actual issues
-                        with st.expander(f"❗ {label} Details ({len(errors)} issue(s))", expanded=True):
-                            st.error(f"{len(errors)} issue(s) found:")
-                            for e in errors:
-                                st.markdown(f"<span style='color:red'>• {e}</span>", unsafe_allow_html=True)
+            for label, errors in all_errors.items():
+                if errors:  # Only show expanders with actual issues
+                    with st.expander(f"❗ {label} Details ({len(errors)} issue(s))", expanded=True):
+                        st.error(f"{len(errors)} issue(s) found:")
+                        for e in errors:
+                            st.markdown(f"<span style='color:red'>• {e}</span>", unsafe_allow_html=True)
     
         #st.dataframe(df_tests_processed)                        
     else:
