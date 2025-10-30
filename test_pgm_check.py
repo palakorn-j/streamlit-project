@@ -3,7 +3,75 @@ import pandas as pd
 import numpy as np
 import re
 
+def calc_si(txt_a: str, txt_b: str, op: str = "/") -> str:
+    """
+    Calculate the result of txt_a <op> txt_b where txt_a and txt_b
+    are strings like '80u', '100m', etc.
+    Automatically scales the result to keep it between 1 and 999,
+    with an appropriate SI prefix, formatted to 4 significant digits.
+    """
 
+    import re
+
+    # Define SI prefixes from smallest to largest
+    si_prefix = [
+        ('p', 1e-12),
+        ('n', 1e-9),
+        ('u', 1e-6),
+        ('m', 1e-3),
+        ('', 1.0),
+        ('k', 1e3),
+        ('M', 1e6),
+        ('G', 1e9)
+    ]
+    prefix_dict = dict(si_prefix)
+
+    # Helper: parse '80u' → 80 × 1e-6
+    def parse_value(s):
+        if isinstance(s, (int, float)):
+            return float(s)
+        match = re.match(r"([\d.]+)\s*([pnumkMG]?)", str(s).strip())
+        if not match:
+            raise ValueError(f"Invalid token: {s}")
+        num, prefix = match.groups()
+        return float(num) * prefix_dict.get(prefix, 1.0)
+
+    # Convert inputs
+    a = parse_value(txt_a)
+    b = parse_value(txt_b)
+
+    # Perform operation
+    if op == "/":
+        result_value = a / b
+    elif op == "*":
+        result_value = a * b
+    elif op == "+":
+        result_value = a + b
+    elif op == "-":
+        result_value = a - b
+    else:
+        raise ValueError(f"Unsupported operator: {op}")
+
+    # Auto-scale to 1 <= scaled < 1000
+    abs_val = abs(result_value)
+    chosen_prefix, chosen_factor = '', 1.0
+    for prefix, factor in si_prefix:
+        scaled = abs_val / factor
+        if 1 <= scaled < 1000:  # ✅ max 3 integer digits
+            chosen_prefix, chosen_factor = prefix, factor
+            break
+    else:
+        # If very small, use smallest prefix; if huge, use largest
+        if abs_val < 1e-12:
+            chosen_prefix, chosen_factor = 'p', 1e-12
+        else:
+            chosen_prefix, chosen_factor = 'G', 1e9
+
+    scaled_val = result_value / chosen_factor
+
+    # Format with 4 significant digits
+    return f"{scaled_val:.4g}{chosen_prefix}"
+    
 def filter_spec_columns(df_tests):
     """
     Clean the test DataFrame to keep only the columns relevant 
@@ -913,6 +981,15 @@ def parse_test_plan_block(block):
 
     flags = get_test_flags(block)
 
+    # ✅ Special cases using calc_si
+    try:
+        if item_name in ("RDON", "HRDON", "RDON-", "HRDON-"):
+            limit = calc_si(str(limit), str(bias1), "/")
+        elif item_name in ("HFE", "HHFE"):
+            limit = calc_si(str(bias2), str(limit), "/")
+    except Exception as e:
+        print(f"Warning: calc_si failed for {item_name}: {e}")
+    
     return {
         "Sequence": sequence_num,
         "ItemName": item_name,
@@ -994,6 +1071,7 @@ def parse_tst_data(data):
     num_sort_plans = data[10]
     test_plan_start = 36
     test_block_size = 18
+    sort_block_size = data[11]
     test_plans = []
 
     for i in range(num_test_plans):
@@ -1010,7 +1088,8 @@ def parse_tst_data(data):
 
     offset = sort_plan_start
     for i in range(num_sort_plans):
-        block_size = 20 + (num_test_plans * 2)
+        #block_size = 20 + (num_test_plans * 2)
+        block_size = 20 + (sort_block_size * 2)
         block = data[offset:offset + block_size]
         if len(block) < block_size:
             st.warning(f"Incomplete sort block data at index {i}")
@@ -1090,7 +1169,7 @@ for label, func in VALIDATION_RULES.items():
             )
 
 # === Tabs for Single vs Multiple File Validation ===
-tab1, tab2, tab3 = st.tabs(["📁 Single File Validation", "🗂️ Multiple File Validation", "⚠️ MSS Spec Validation"])
+tab1, tab2, tab3 = st.tabs(["📁 Single File Validation", "🗂️ Multiple File Validation", "⚠️ Spec Draft"])
 
 # ------------------------------------------------------
 # TAB 1: Single File Validation
@@ -1210,7 +1289,7 @@ with tab1:
                 height=len(summary_df) * 35 + 40  # auto height per row
             )
             
-            # Details         
+            # Details
             issue_found = False  # Track if any issue exists
             for label, errors in all_errors.items():
                 if errors:
@@ -1222,7 +1301,6 @@ with tab1:
 
             if not issue_found:
                 st.success("✅ No issues found.")
-    
         #st.dataframe(df_tests_processed)                        
     else:
         st.info("Please upload a .tst file to start validation.")
@@ -1362,7 +1440,7 @@ with tab2:
         st.info("Please upload one or more .tst files for validation.")
 
 # ------------------------------------------------------
-# TAB 3: Single File Validation
+# TAB 3: MSS Spec Validation
 # ------------------------------------------------------
 with tab3:
     st.header("MSS Spec Validation")
@@ -1438,14 +1516,9 @@ with tab3:
 
             spec_draft.drop(columns=["Sequence"], inplace=True)
 
-           # --- Editable Spec Draft Table ---
-            # Page config to maximize layout
-
-            st.set_page_config(layout="wide")
-
+            # --- Editable Spec Draft Table ---
             st.subheader("MSS Table")
-
-            # Use container width and wrap it in a full-width column
+           # Use container width and wrap it in a full-width column
             with st.container():
                 edited_spec = st.data_editor(
                     spec_draft,
@@ -1466,9 +1539,3 @@ with tab3:
             st.warning("⚠️ No valid test data found in the uploaded file.")
     else:
         st.info("Please upload a `.tst` file to view spec data.")
-
-
-
-
-
-
