@@ -1526,7 +1526,14 @@ with tab3:
                     use_container_width=True
                 )
 
-            # --- Export Spec Draft ---
+            st.markdown(
+                "<div style='padding: 0.5em; background-color: #fff8e1; border-left: 6px solid #f39c12;'>"
+                "<strong>⚠️ Tip:</strong> For a properly named export, please use the <em>Download Spec Draft as CSV</em> button below."
+                "</div>",
+                unsafe_allow_html=True
+            )
+
+            # --- Export MSS Table ---
             csv_data = edited_spec.to_csv(index=False).encode("utf-8")
             st.download_button(
                 label="📥 Download MSS as CSV",
