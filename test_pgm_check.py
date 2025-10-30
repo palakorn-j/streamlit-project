@@ -1435,13 +1435,20 @@ with tab3:
 
             spec_draft.drop(columns=["Sequence"], inplace=True)
 
-            # --- Editable Spec Draft Table ---
+           # --- Editable Spec Draft Table ---
+            # Page config to maximize layout
+
+            st.set_page_config(layout="wide")
+
             st.subheader("Spec Draft (Editable)")
-            edited_spec = st.data_editor(
-                spec_draft,
-                num_rows="dynamic",
-                use_container_width=True
-            )
+
+            # Use container width and wrap it in a full-width column
+            with st.container():
+                edited_spec = st.data_editor(
+                    spec_draft,
+                    num_rows="dynamic",
+                    use_container_width=True
+                )
 
             # --- Export Spec Draft ---
             csv_data = edited_spec.to_csv(index=False).encode("utf-8")
