@@ -1445,7 +1445,7 @@ with tab3:
     st.header("MSS Spec Validation")
 
     uploaded_spec_file = st.file_uploader("Upload a .tst file", type=["tst"], key="spec")
-    file_name = os.path.splitext(uploaded_spec_file.name([0]
+    file_name = os.path.splitext(uploaded_spec_file.name)[0]
     
     if uploaded_spec_file:
         data = uploaded_spec_file.read()
