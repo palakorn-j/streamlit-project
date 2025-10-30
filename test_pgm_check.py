@@ -1528,7 +1528,7 @@ with tab3:
 
             st.markdown(
                 "<div style='padding: 0.5em; background-color: #fff8e1; border-left: 6px solid #f39c12;'>"
-                "<strong>⚠️ Tip:</strong> For a properly named export, please use the <em>Download Spec Draft as CSV</em> button below."
+                "<strong>⚠️ Tip:</strong> For a properly named export, please use the <em>Download MSS as CSV</em> button below."
                 "</div>",
                 unsafe_allow_html=True
             )
