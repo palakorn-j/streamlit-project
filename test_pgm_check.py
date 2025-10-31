@@ -1293,7 +1293,7 @@ with tab1:
             for label, errors in all_errors.items():
                 if errors:
                     issue_found = True
-                    with st.expander(f"❗ {label} ({len(errors)} issue(s))", expanded=True):
+                    with st.expander(f"❗ {label} {len(errors)} issue(s)", expanded=True):
                         st.error(f"{len(errors)} issue(s) found:")
                         for e in errors:
                             st.markdown(f"<span style='color:red'>• {e}</span>", unsafe_allow_html=True)
