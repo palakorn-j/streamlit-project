@@ -1140,9 +1140,9 @@ st.title("TST File Parser")
 VALIDATION_RULES = {
     "Clamp condition are correct": validate_bv_bias2_gt_limith,
     "All FailSort are Branch condition": check_cb2_all_B,
-    "Some Test Item is not specifeid 'Fail Branch'": check_failbranch_vs_sequence,
-    "All 'Fail Branch' have same value": check_failbranch_uniform,
-    "Use only 'Fail Branch'": check_passbranch_all_zero,
+    "Some Test Item is not specifeid Fail Branch": check_failbranch_vs_sequence,
+    "All Fail Branch have same value": check_failbranch_uniform,
+    "Use only Fail Branch": check_passbranch_all_zero,
     "OSC in Sort Plan": validate_logiccondition_osc_once,
     "Reject in Sort Plan": validate_logiccondition_reject_once,
     "Use 'All PASS'": validate_logiccondition_all_pass_once,
