@@ -1161,7 +1161,7 @@ expected_bin_number = None
 for label, func in VALIDATION_RULES.items():
     if st.sidebar.checkbox(label, value=True):
         selected_validations.append((label, func))
-        if label == "Once ALL PASS with expected BinNumber":
+        if label == "Use 'All PASS'":
             expected_bin_number = st.sidebar.number_input(
                 "Expected BinNumber for 'ALL PASS'",
                 min_value=0, value=1, step=1
@@ -1373,7 +1373,7 @@ with tab2:
                 for label, func in selected_validations:
                     df_tests_processed = apply_same_mirroring(df_tests) if df_tests is not None else None
 
-                    if label == "Once ALL PASS with expected BinNumber":
+                    if label == "Use 'All PASS'":
                         errors = func(df_tests_processed, df_sorts, expected_bin_number)
                     elif label == "LowVolt's I-Bias not over 20A":
                         errors = func(df_tests, df_sorts)
