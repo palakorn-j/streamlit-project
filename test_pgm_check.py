@@ -1255,7 +1255,7 @@ with tab1:
                 df_tests_processed = apply_same_mirroring(df_tests)
 
                 # Function calling logic
-                if label == "Once ALL PASS with expected BinNumber":
+                if label == "Use 'All PASS'":
                     errors = func(df_tests_processed, df_sorts, expected_bin_number)
                 elif label == "LowVolt's I-Bias not over 20A":
                     errors = func(df_tests, df_sorts)
