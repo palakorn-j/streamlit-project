@@ -6,6 +6,8 @@ import os
 from supabase import create_client
 import datetime
 
+st.set_page_config(layout="wide")
+
 def calc_si(txt_a: str, txt_b: str, op: str = "/") -> str:
     """
     Calculate the result of txt_a <op> txt_b where txt_a and txt_b
