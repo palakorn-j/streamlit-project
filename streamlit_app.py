@@ -1534,12 +1534,14 @@ with tab3:
             spec_draft.loc[mask, "SeqBias2"] = ""
 
             # --- Editable Spec Draft Table ---
-            st.subheader("Spec Draft (Editable)")
-            edited_spec = st.data_editor(
-                spec_draft,
-                num_rows="dynamic",
-                use_container_width=False
-            )
+            st.subheader("MSS Table")
+            # Use container width and wrap it in a full-width column
+            with st.container():
+                edited_spec = st.data_editor(
+                    spec_draft,
+                    num_rows="dynamic",
+                    use_container_width=True
+                )
 
             # --- Save to Supabase ---
             # --- Save to Supabase ---
