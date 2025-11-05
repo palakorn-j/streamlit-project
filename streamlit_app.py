@@ -1735,6 +1735,11 @@ with tab3:
             # --- Save to Supabase ---
             if st.button("Save Spec to Supabase"):
                 if not edited_spec.empty:
+
+                    # 🧹 Drop unnamed index column if it exists
+                    if "" in edited_spec.columns:
+                        edited_spec = edited_spec.drop(columns=[""])
+                    
                     # 1️⃣ Convert only integer Seq columns
                     int_seq_cols = ["SeqItemName", "SeqBias1", "SeqRV"]
                     for col in int_seq_cols:
